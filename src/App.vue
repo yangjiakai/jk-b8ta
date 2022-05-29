@@ -1,26 +1,37 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <v-img alt="Vuetify Logo" class="shrink mr-2" contain
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png" transition="scale-transition" width="40" />
+    <v-app-bar app color="#2D3753" dark>
+      <v-container class="py-0 fill-height">
+        <v-avatar class="mr-10" color="grey darken-1" size="32"></v-avatar>
+        <v-toolbar-items>
+          <v-btn text to="/">home</v-btn>
+          <v-btn text to="/about">about</v-btn>
+          <v-btn text to="/news">news</v-btn>
+          <v-menu open-on-hover bottom offset-y>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn text to="/collections/all" v-bind="attrs" v-on="on">
+                collections
+              </v-btn>
+            </template>
 
-        <v-img alt="Vuetify Name" class="shrink mt-1 hidden-sm-and-down" contain min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png" width="100" />
-      </div>
+            <v-list>
+              <v-list-item v-for="(item, index) in collectionItems" :key="index">
+                <v-list-item-title>
+                  <router-link :to="item.router">{{ item.title }}</router-link>
+                </v-list-item-title>
 
-      <v-toolbar-items>
-        <v-btn text to="/">home</v-btn>
-        <v-btn text to="/about">about</v-btn>
-        <v-btn text to="/news">news</v-btn>
-      </v-toolbar-items>
-      <v-spacer></v-spacer>
-      <v-btn color="success" @click="goBack()">back</v-btn>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </v-toolbar-items>
 
-      <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
-      </v-btn>
+
+        <v-spacer></v-spacer>
+        <v-btn text @click="goBack()">back</v-btn>
+        <v-responsive max-width="260">
+          <v-text-field dense flat hide-details rounded solo-inverted></v-text-field>
+        </v-responsive>
+      </v-container>
     </v-app-bar>
 
     <v-main>
@@ -38,11 +49,27 @@
     },
 
     data: () => ({
-      //
+      collectionItems: [{
+          title: 'tv',
+          router: 'tv'
+        },
+        {
+          title: 'pc',
+          router: 'pc'
+        },
+        {
+          title: 'phone',
+          router: 'phone'
+        },
+        {
+          title: 'game',
+          router: 'game'
+        },
+      ],
     }),
 
     methods: {
-      goBack(){
+      goBack() {
         window.history.length > 1 ? this.$router.go(-1) : this.$router.push('/')
       }
     },
